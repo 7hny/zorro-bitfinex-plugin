@@ -10,7 +10,8 @@
 //#include<ios>
 
 
-#pragma warning(disable:4996) // disable fopen depredecation msg
+#include "bfx-cpp-api\BitfinexAPI.hpp"
+
 
 //string FileName = "Log\\BitfinexKeys.txt";  // name of the CSV file
 
@@ -34,7 +35,12 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 
 /////////////////////////////////////////////////////////////
 typedef double DATE;
-#include "trading.h"  // enter your path to trading.h (in your Zorro folder)
+
+namespace Zorro {
+	#include "trading.h"  // enter your path to trading.h (in your Zorro folder)
+}
+
+//#include "trading.h"  // enter your path to trading.h (in your Zorro folder)
 //#include "functions.h"
 
 #define PLUGIN_VERSION	2
@@ -48,22 +54,6 @@ int(__cdecl *BrokerError)(const char *txt) = NULL;
 int(__cdecl *BrokerProgress)(const int percent) = NULL;
 
 
-void readwrite()
-{
-	FILE *fp1, *fp2;
-	char line[200];
-
-	fp1 = fopen("File1", "r");
-	fp2 = fopen("File2", "w");
-
-	while (!feof(fp1)) {
-		fscanf(fp1, "%[^\n]", line);
-		fprintf(fp2, "%s\n", line);
-	}
-
-	fclose(fp1);
-	fclose(fp2);
-}
 
 void readFile() {
 
@@ -105,7 +95,7 @@ DLLFUNC int BrokerOpen(char* Name, FARPROC fpError, FARPROC fpProgress)
 // 0 = test, 1 = relogin, 2 = login, -1 = logout
 DLLFUNC int BrokerLogin(char* User, char* Pwd, char* Type, char* Account)
 {
-	string FileName = "BitfinexKeys.txt";  // name of the CSV file
+	//string FileName = "BitfinexKeys.txt";  // name of the CSV file
 
 	//if (!User)
 	//	FXCM_Logout();

@@ -95,19 +95,25 @@ void makeTestRequest() {
 	auto fileStream = std::make_shared<ostream>();
 
 	// Open stream to output file.
-	pplx::task<void> requestTask = fstream::open_ostream(U("results.html"))
+	pplx::task<void> requestTask = fstream::open_ostream(U("Plugin\\results.html"))
 		
 	.then([=](ostream outFile)
 	{
 		*fileStream = outFile;
 
 		// Create http_client to send the request.
-		http_client client(U("http://www.bing.com/"));
+		//http_client client(U("http://www.bing.com/"));
+		http_client client(U("https://api.bitfinex.com/v1/pubticker/btcusd"));
+	
 
 		// Build request URI and start the request.
-		uri_builder builder(U("/search"));
-		builder.append_query(U("q"), U("cpprestsdk github"));
-		return client.request(methods::GET, builder.to_string());
+		//uri_builder builder(U("/search"));
+		//builder.append_query(U("q"), U("cpprestsdk github"));
+
+		BrokerError("TEST REQUEST2");
+
+		//return client.request(methods::GET, builder.to_string());
+		return client.request(methods::GET);
 	})
 
 	// Handle response headers arriving.
@@ -135,7 +141,7 @@ void makeTestRequest() {
 	catch (const std::exception &e)
 	{
 		//printf("Error exception:%s\n", e.what());
-		BrokerError("Error exception:%s\n", e.what());
+		BrokerError(e.what());
 	}
 
 }
